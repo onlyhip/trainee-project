@@ -61,8 +61,8 @@ public class UserController {
      */
     @GetMapping("/change-password")
     public String updateUserPasswordForm(Model model) {
-        ClassAdmin loginedAdmin = classAdminRepository.getLoginAccount();
-        model.addAttribute("user", loginedAdmin);
+        ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
+        model.addAttribute("user", loginAdmin);
 
         return "pages/user-views/change-password";
     }
@@ -77,7 +77,6 @@ public class UserController {
     @PostMapping("/change-password")
     public String updateUserPassword(@RequestParam("new-password") String newPassword,
                                      @RequestParam("oldPassword") String oldPassword, RedirectAttributes attributes) {
-
         ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
         if (!passwordEncoder.matches(oldPassword, loginAdmin.getPassword())) {
             return "redirect:/change-password?error=true";
