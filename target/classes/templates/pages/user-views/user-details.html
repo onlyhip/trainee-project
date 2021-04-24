@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout-template.html}"
+      th:with="currentPage='User Details',currentLink='User Details',currentTemplate='User Profile'">
+>
+<head>
+    <title>User Management System</title>
+</head>
+<body>
+<div layout:fragment="content" class="content">
+
+    <div class="container-fluid col-md-4">
+        <form th:object="${user}" >
+            <h2 class="text-center mt-0">Details User</h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="Full name is empty" th:value="*{name}"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" placeholder="Email is empty" th:value="*{email}"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label>Tel number</label>
+                <input type="text" class="form-control" placeholder="Tel number is empty" th:value="*{telNumber}"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label>Facebook</label>
+                <input type="text" class="form-control" placeholder="Facebook is empty" th:value="*{facebook}"
+                       disabled>
+            </div>
+
+            <div class="form-group">
+                <label>National</label>
+                <input type="text" class="form-control" placeholder="National is empty" th:value="*{national}"
+                       disabled>
+            </div>
+
+            <div class="form-group">
+                <a type="submit" th:href="@{/user-update}" class="btn btn-info btn-fill btn-block">Update User</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

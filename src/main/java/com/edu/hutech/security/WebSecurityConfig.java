@@ -38,14 +38,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/class-management").permitAll()       // class-management and class-detail
                 .antMatchers("/trainee-management").permitAll()     // trainee-management and trainee-detail
+                .antMatchers("/trainer-management").permitAll()
                 .antMatchers("/change-password").authenticated()
-                .antMatchers("/general-management").authenticated() // subject-list and subject-details
-                .antMatchers("/general-management/trainee-list").authenticated()
-                .antMatchers("/general-management/trainer-list").authenticated()
-                .antMatchers("/general-management/subject-list").authenticated()
-                .antMatchers("/general-management/subject-list/subject-details").authenticated()
+                .antMatchers("/user-details").authenticated()
+                .antMatchers("/user-update").authenticated()
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/download-templates").authenticated()
                 .and()
                 .formLogin() // Submit URL of login page.
                 .loginPage("/login")//

@@ -8,6 +8,8 @@ $().ready(function () {
     checkWrongPassword();
 
     checkSuccessChangePassword();
+    
+    checkSuccessUpdateUser();
 
     menuBar();
 
@@ -666,6 +668,14 @@ function successChangePassword() {
     })
 }
 
+function successUpdateUser() {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Update user successfully !'
+    })
+}
+
 
 // JS code for print the notifications for successful Password Change 
 
@@ -713,6 +723,16 @@ function checkSuccessChangePassword() {
 
     if (checkSuccess != null) {
         successChangePassword();
+    }
+}
+
+
+function checkSuccessUpdateUser() {
+
+    let checkSuccess = document.getElementById("check-success-update-user");
+
+    if (checkSuccess != null) {
+        successUpdateUser();
     }
 }
 
@@ -797,20 +817,20 @@ $(function () {
 
 
 function menuBar() {
-    if (currentLink == 'Dashboard' || currentLink == 'Trainer') {
-        $("#link-1").addClass("active");
+    if (currentLink === 'Dashboard' || currentLink === 'User Details') {
+        $("#link-first").addClass("active");
     }
 
-    if (currentLink == 'Class Management' || currentLink == 'Trainee') {
-        $("#link-2").addClass("active");
+    if (currentLink === 'Class Management' || currentLink === 'Change Password') {
+        $("#link-second").addClass("active");
     }
 
-    if (currentLink == 'Trainee Management' || currentLink == 'Subject') {
-        $("#link-3").addClass("active");
+    if (currentLink === 'Trainee Management' || currentLink === 'User Update') {
+        $("#link-third").addClass("active");
     }
 
-    if (currentLink == 'Download Templates') {
-        $("#link-4").addClass("active");
+    if (currentLink === 'Trainer Management') {
+        $("#link-fourth").addClass("active");
     }
 }
 

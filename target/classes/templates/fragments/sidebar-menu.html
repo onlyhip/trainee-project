@@ -8,59 +8,59 @@ Tip 2: you can also add an image using data-image tag
 <div class="sidebar-wrapper">
     <div th:switch="${currentTemplate}" class="logo">
 
-        <a th:case="'General Management'" th:href="@{/}" class="simple-text">
-            SRU MANAGEMENT
+        <a th:case="'User Profile'" th:href="@{/}" class="simple-text">
+            BACK TO HOME PAGE
         </a>
 
-        <a th:case="*" th:href="@{/general-management}" class="simple-text">
-            FRESH REPORT
+        <a th:case="*" th:href="@{/}" class="simple-text">
+            SRU MANAGEMENT
         </a>
 
     </div>
     <ul th:if="${currentTemplate == 'Default Management'}" class="nav">
-        <li class="nav-item" id="link-1">
+        <li class="nav-item" id="link-first">
             <a class="nav-link" th:href="@{/}">
                 <i class="fa fa-tachometer"></i>
                 <p>Dashboard</p>
             </a>
         </li>
-        <li class="nav-item" id="link-2">
+        <li class="nav-item" id="link-second">
             <a class="nav-link" th:href="@{/class-management}">
                 <i class="fa fa-list-alt"></i>
                 <p>Class Management</p>
             </a>
         </li>
-        <li class="nav-item" id="link-3">
+        <li class="nav-item" id="link-third">
             <a class="nav-link" th:href="@{/trainee-management}">
                 <i class="fa fa-user-circle-o"></i>
                 <p>Trainee Management</p>
             </a>
         </li>
-        <li class="nav-item" id="link-4">
-            <a class="nav-link" th:href="@{/download-templates}">
+        <li class="nav-item" id="link-fourth">
+            <a class="nav-link" th:href="@{/trainer-management}">
                 <i class="fa fa-cloud-download"></i>
-                <p>Download Templates</p>
+                <p>Trainer Management</p>
             </a>
         </li>
     </ul>
 
     <ul th:unless="${currentTemplate == 'Default Management'}" class="nav">
-        <li class="nav-item" id="link-1">
-            <a class="nav-link" th:href="@{/general-management/trainer-list}">
-                <i class="fa fa-user"></i>
-                <p>Trainer Management</p>
+        <li class="nav-item" id="link-first">
+            <a class="nav-link" th:href="@{/user-details}">
+                <i class="fa fa-info-circle"></i>
+                <p>Details Profile</p>
             </a>
         </li>
-        <li class="nav-item" id="link-2">
-            <a class="nav-link" th:href="@{/general-management/trainee-list}">
-                <i class="fa fa-users"></i>
-                <p>Trainee Management</p>
+        <li class="nav-item" id="link-second">
+            <a class="nav-link" th:href="@{/change-password}">
+                <i class="fa fa-unlock-alt"></i>
+                <p>Change Password</p>
             </a>
         </li>
-        <li class="nav-item" id="link-3">
-            <a class="nav-link" th:href="@{/general-management/subject-list}">
-                <i class="fa fa-book"></i>
-                <p>Subject Management</p>
+        <li class="nav-item" id="link-third">
+            <a class="nav-link" th:href="@{/user-update}">
+                <i class="fa fa-pencil-square"></i>
+                <p>Update Profile</p>
             </a>
         </li>
     </ul>

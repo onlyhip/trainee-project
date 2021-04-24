@@ -2,10 +2,13 @@ package com.edu.hutech.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import com.edu.hutech.entities.ClassAdmin;
+import com.edu.hutech.entities.User;
 import com.edu.hutech.repositories.ClassAdminRepository;
 
+import com.edu.hutech.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,11 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +35,10 @@ public class UserController {
 
     @Autowired
     private ClassAdminRepository classAdminRepository;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Display the login view
@@ -91,5 +102,47 @@ public class UserController {
 
         return "redirect:/";
     }
+
+
+    @GetMapping("/user-details")
+    public String showDetailsUser(Model model) {
+        ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
+        model.addAttribute("user", loginAdmin);
+
+        return "pages/user-views/user-details";
+    }
+
+    @GetMapping("/user-update")
+    public String showUpdateUser(Model model) {
+        ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
+
+        User user = userRepository.getOne(loginAdmin.getId());
+
+        model.addAttribute("user", user);
+
+        return "pages/user-views/user-update";
+    }
+
+
+    @PostMapping("/user-update")
+    public String updateUser(@Valid User user, ModelMap modelMap) {
+
+        ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
+
+        User userUpdate = userRepository.getOne(loginAdmin.getId());
+        userUpdate.setName(user.getName());
+        userUpdate.setEmail(user.getEmail());
+        userUpdate.setFacebook(user.getFacebook());
+        userUpdate.setTelNumber(user.getTelNumber());
+        userUpdate.setNational(user.getNational());
+
+        userRepository.save(userUpdate);
+
+        modelMap.addAttribute("result", "success");
+        modelMap.addAttribute("user", userUpdate);
+
+        return "pages/user-views/user-update";
+    }
+
 
 }
