@@ -974,3 +974,16 @@ span.tags {
   display: inline-flex;
   line-height: 40px;
 }
+
+
+.form-check-remember {
+  position: relative;
+  display: block;
+  padding-left: 1.25rem;
+}
+
+.form-check-input {
+  position: absolute;
+  margin-top: .35rem;
+  margin-left: -1.25rem;
+}

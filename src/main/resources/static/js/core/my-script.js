@@ -1,4 +1,10 @@
 $().ready(function () {
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 
     createPieFirst();
     createPieSecond();
@@ -532,6 +538,7 @@ demo = {
     }
 
 
+
 }
 
 function createPieFirst() {
@@ -690,24 +697,43 @@ function validatePassword() {
     showMessage.innerHTML = "";
 
     //check empty password field  
-    if (oldPasswordConfirm == "") {
-        showMessage.innerHTML = " Required input old password !";
+    if (oldPasswordConfirm === "") {
+        showMessage.innerHTML = " Required input current password !";
         return false;
     }
 
     //check empty confirm password field  
-    if (password == "") {
+    if (password === "") {
         showMessage.innerHTML = " Required input new password !";
         return false;
     }
 
 
-    if (confirmPassword == "") {
+    if (confirmPassword === "") {
         showMessage.innerHTML = " Required input confirm password !";
         return false;
     }
 
-    //compare password
+
+    let passwordValidation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+    if(!oldPasswordConfirm.match(passwordValidation)){
+        showMessage.innerHTML = " Invalid current password format!";
+        return false;
+    }
+
+
+    if(!password.match(passwordValidation)){
+        showMessage.innerHTML = " Invalid new password format!";
+        return false;
+    }
+
+    if(!confirmPassword.match(passwordValidation)){
+        showMessage.innerHTML = " Invalid confirm password format!";
+        return false;
+    }
+
+
     if (password != confirmPassword) {
         showMessage.innerHTML = " Password did not match!";
         return false;
@@ -745,13 +771,21 @@ function checkInputLogin() {
 
     errorLogin.innerHTML = "";
 
-    if (username === "" || password === "") {
-        errorLogin.innerHTML = "Error: Required input Username and Password !";
 
+
+    if (username === "" || password === "") {
+        errorLogin.innerHTML = "Error: Required input username and password !";
         return false;
     }
 
-    return true;
+    let passwordValidation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+    if(password.match(passwordValidation)){
+        return true;
+    }else{
+        errorLogin.innerHTML = "Error: Invalid password format !";
+        return false;
+    }
 }
 
 
@@ -819,14 +853,17 @@ $(function () {
 function menuBar() {
     if (currentLink === 'Dashboard' || currentLink === 'User Details') {
         $("#link-first").addClass("active");
+        $("#link-first-user").addClass("active");
     }
 
     if (currentLink === 'Class Management' || currentLink === 'Change Password') {
         $("#link-second").addClass("active");
+        $("#link-second-user").addClass("active");
     }
 
     if (currentLink === 'Trainee Management' || currentLink === 'User Update') {
         $("#link-third").addClass("active");
+        $("#link-third-user").addClass("active");
     }
 
     if (currentLink === 'Trainer Management') {

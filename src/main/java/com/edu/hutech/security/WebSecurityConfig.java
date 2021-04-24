@@ -32,7 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // Config for Login Form
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
@@ -52,12 +51,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .permitAll()
                 .and()
+                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(1296000)
+                .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/logoutSuccessful")
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/404");
+                .accessDeniedPage("/404")
+                .and()
+                .csrf().disable();
 
     }
 }

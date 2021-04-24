@@ -46,7 +46,6 @@ public class UserController {
      */
     @GetMapping("/login")
     public String getLogin() {
-
         return "pages/user-views/login";
     }
 
@@ -57,16 +56,18 @@ public class UserController {
      * @return the Home view
      */
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response,Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
+            SecurityContextHolder.getContext().setAuthentication(null);
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/";
+
+        return "redirect:/login";
     }
 
     /**
-     * Display the Password-changing form after logined
+     * Display the Password-changing form after login
      * @param model
      * @return change-password form
      */
