@@ -1,12 +1,15 @@
 package com.edu.hutech.controllers;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import com.edu.hutech.entities.Course;
 import com.edu.hutech.entities.Fresher;
+import com.edu.hutech.entities.Trainee;
 import com.edu.hutech.repositories.*;
 
 import com.edu.hutech.utils.data.CreateData;
@@ -14,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
@@ -50,53 +55,112 @@ public class HomeController {
 
     /**
      * Handling Home request
+     *
      * @param model
      * @return the reporting view of trainee and class
      */
-    @GetMapping(value = {"/", "home"})
-    public String viewHomePage(Model model) {
+    @GetMapping(value = {"/", "home","/show-report"})
+    public String viewHomePage(Model model, @RequestParam("start-date") Optional<String> startDate,
+                               @RequestParam("end-date") Optional<String> endDate) {
 
-        List<Course> listCourse = courseRepository.findAll();
-        List<Fresher> listFresher = fresherRepository.findAll();
         int waitingCourse = 0;
         int releaseCourse = 0;
         int runningCourse = 0;
-        int waitingFresher = 0;
-        int releaseFresher = 0;
-        int runningFresher = 0;
-        for (Course c : listCourse) {
+        int waitingTrainee = 0;
+        int releaseTrainee = 0;
+        int runningTrainee = 0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            if (c.getStatus().equals("Done"))
-                releaseCourse++;
-            else if (c.getStatus().equals("Waiting"))
-                waitingCourse++;
-            else
-                runningCourse++;
-        }
+        List<Course> listCourse = new ArrayList<>();
+        List<Trainee> listTrainee = new ArrayList<>();
 
-        for (Fresher f : listFresher) {
-            if (Timestamp.valueOf(LocalDateTime.now()).compareTo(f.getTraineeStatus().getStartDay()) < 0)
-                waitingFresher++;
-            else if (Timestamp.valueOf(LocalDateTime.now()).compareTo(f.getTraineeStatus().getEndDate()) > 0)
-                releaseFresher++;
-            else
-                runningFresher++;
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String defaultEndDate = dateFormat.format(date);
+        String defaultStartDate = "2017-01-01";
+
+        String start = startDate.orElse(defaultStartDate);
+        String end = endDate.orElse(defaultEndDate);
+
+        if (start.equals(defaultStartDate) && end.equals(defaultEndDate)) {
+            listCourse = courseRepository.findAll();
+            listTrainee = traineeRepository.findAll();
+            for (Course c : listCourse) {
+                if (c.getStatus().equals("Done"))
+                    releaseCourse++;
+                else if (c.getStatus().equals("Waiting"))
+                    waitingCourse++;
+                else
+                    runningCourse++;
+            }
+
+            for (Trainee f : listTrainee) {
+                if (Timestamp.valueOf(LocalDateTime.now()).compareTo(f.getTraineeStatus().getStartDay()) < 0)
+                    waitingTrainee++;
+                else if (Timestamp.valueOf(LocalDateTime.now()).compareTo(f.getTraineeStatus().getEndDate()) > 0)
+                    releaseTrainee++;
+                else
+                    runningTrainee++;
+            }
+        } else {
+
+            Date dateStart = new Date();
+            Date dateEnd = new Date();
+
+            try {
+                dateStart = simpleDateFormat.parse(start);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                dateEnd = simpleDateFormat.parse(end);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            listCourse = courseRepository.findAllByOpenDateGreaterThanEqualAndEndDateLessThanEqual(dateStart, dateEnd);
+
+            for (Course c : listCourse) {
+                if (c.getStatus().equals("Done"))
+                    releaseCourse++;
+                else if (c.getStatus().equals("Waiting"))
+                    waitingCourse++;
+                else
+                    runningCourse++;
+            }
+            for (Course c : listCourse) {
+                listTrainee.addAll(c.getTrainee());
+            }
+
+            for (Trainee f : listTrainee) {
+                if (dateEnd.compareTo(f.getTraineeStatus().getStartDay()) < 0)
+                    waitingTrainee++;
+                else if (dateEnd.compareTo(f.getTraineeStatus().getEndDate()) > 0)
+                    releaseTrainee++;
+                else
+                    runningTrainee++;
+            }
         }
 
         model.addAttribute("totalCourse", listCourse.size());
-        model.addAttribute("totalFresher", listFresher.size());
+        model.addAttribute("totalTrainee", listTrainee.size());
         model.addAttribute("wCourse", waitingCourse);
         model.addAttribute("rCourse", releaseCourse);
         model.addAttribute("rnCourse", runningCourse);
-        model.addAttribute("wFresher", waitingFresher);
-        model.addAttribute("rFresher", releaseFresher);
-        model.addAttribute("rnFresher", runningFresher);
+        model.addAttribute("wTrainee", waitingTrainee);
+        model.addAttribute("rTrainee", releaseTrainee);
+        model.addAttribute("rnTrainee", runningTrainee);
+
+        model.addAttribute("startDate", start);
+        model.addAttribute("endDate", end);
 
         return "/pages/index";
     }
 
+
     /**
      * Handling error request
+     *
      * @return the error view
      */
     @GetMapping("/404")
@@ -106,6 +170,7 @@ public class HomeController {
 
     /**
      * Create demo data
+     *
      * @return create-database.html
      */
     @GetMapping("/create-data-first")
@@ -132,6 +197,7 @@ public class HomeController {
 
     /**
      * Create Demo data
+     *
      * @return create-database.html
      */
     @GetMapping("/create-data-second")

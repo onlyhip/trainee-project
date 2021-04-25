@@ -126,7 +126,7 @@ public class UserController {
 
 
     @PostMapping("/user-update")
-    public String updateUser(@Valid User user, ModelMap modelMap) {
+    public String updateUser(@Valid User user, Model model) {
 
         ClassAdmin loginAdmin = classAdminRepository.getLoginAccount();
 
@@ -139,8 +139,8 @@ public class UserController {
 
         userRepository.save(userUpdate);
 
-        modelMap.addAttribute("result", "success");
-        modelMap.addAttribute("user", userUpdate);
+        model.addAttribute("result", "success");
+        model.addAttribute("user", userUpdate);
 
         return "pages/user-views/user-update";
     }

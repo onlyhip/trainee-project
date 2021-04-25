@@ -542,11 +542,11 @@ demo = {
 }
 
 function createPieFirst() {
-    var randomScalingFactor = function () {
+    let randomScalingFactor = function () {
         return Math.round(Math.random() * 100);
     };
 
-    var config = {
+    let config = {
         type: 'pie',
         data: {
             datasets: [{
@@ -576,7 +576,7 @@ function createPieFirst() {
 
     if (document.getElementById('chart-area-first') != null) {
 
-        var ctx = document.getElementById('chart-area-first').getContext('2d');
+        let ctx = document.getElementById('chart-area-first').getContext('2d');
 
         window.myPie = new Chart(ctx, config);
 
@@ -584,18 +584,18 @@ function createPieFirst() {
 }
 
 function createPieSecond() {
-    var randomScalingFactor = function () {
+    let randomScalingFactor = function () {
         return Math.round(Math.random() * 100);
     };
 
-    var config = {
+    let config = {
         type: 'pie',
         data: {
             datasets: [{
                 data: [
-                    rFresher,
-                    wFresher,
-                    rnFresher,
+                    rTrainee,
+                    wTrainee,
+                    rnTrainee,
                 ],
                 backgroundColor: [
                     'rgb(255, 205, 86)',
@@ -616,7 +616,7 @@ function createPieSecond() {
     };
 
     if (document.getElementById('chart-area-second') != null) {
-        var ctx = document.getElementById('chart-area-second').getContext('2d');
+        let ctx = document.getElementById('chart-area-second').getContext('2d');
         window.myPie = new Chart(ctx, config);
     }
 
@@ -698,19 +698,19 @@ function validatePassword() {
 
     //check empty password field  
     if (oldPasswordConfirm === "") {
-        showMessage.innerHTML = " Required input current password !";
+        showMessage.innerHTML = "Required input current password!";
         return false;
     }
 
     //check empty confirm password field  
     if (password === "") {
-        showMessage.innerHTML = " Required input new password !";
+        showMessage.innerHTML = "Required input new password!";
         return false;
     }
 
 
     if (confirmPassword === "") {
-        showMessage.innerHTML = " Required input confirm password !";
+        showMessage.innerHTML = "Required input confirm password!";
         return false;
     }
 
@@ -718,29 +718,30 @@ function validatePassword() {
     let passwordValidation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
     if(!oldPasswordConfirm.match(passwordValidation)){
-        showMessage.innerHTML = " Invalid current password format!";
+        showMessage.innerHTML = "Invalid current password format! Password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter";
         return false;
     }
 
 
     if(!password.match(passwordValidation)){
-        showMessage.innerHTML = " Invalid new password format!";
+        showMessage.innerHTML = "Invalid new password format! Password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter!";
         return false;
     }
 
     if(!confirmPassword.match(passwordValidation)){
-        showMessage.innerHTML = " Invalid confirm password format!";
+        showMessage.innerHTML = "Invalid confirm password format! Password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter!";
         return false;
     }
 
 
-    if (password != confirmPassword) {
-        showMessage.innerHTML = " Password did not match!";
+    if (!password.match(confirmPassword)) {
+        showMessage.innerHTML = "Password did not match!";
         return false;
     } else {
         return true;
     }
 }
+
 
 
 function checkSuccessChangePassword() {
@@ -774,7 +775,7 @@ function checkInputLogin() {
 
 
     if (username === "" || password === "") {
-        errorLogin.innerHTML = "Error: Required input username and password !";
+        errorLogin.innerHTML = "Required input username and password!";
         return false;
     }
 
@@ -783,7 +784,7 @@ function checkInputLogin() {
     if(password.match(passwordValidation)){
         return true;
     }else{
-        errorLogin.innerHTML = "Error: Invalid password format !";
+        errorLogin.innerHTML = "Invalid password format! Password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter!";
         return false;
     }
 }
@@ -802,7 +803,7 @@ function checkWrongUser() {
         if (checkErrorInput != null) {
 
             if (checkErrorInput.value === "error") {
-                errorLogin.innerHTML = "Error: Username or password is incorrect !";
+                errorLogin.innerHTML = "Username or password is incorrect!";
             }
         }
     }
@@ -818,11 +819,41 @@ function checkWrongPassword() {
         showMessage.innerHTML = "";
         if (checkPasswordInput != null) {
             if (checkPasswordInput.value === "error") {
-                showMessage.innerHTML = "Old password is incorrect !";
+                showMessage.innerHTML = "Current password is incorrect!";
             }
         }
     }
+}
 
+function showNotificationInputDate(from, align) {
+    color = 4;
+
+    $.notify({
+        message: "Notification: Invalid start date and end date input!"
+
+    }, {
+        type: type[color],
+        timer: 8000,
+        placement: {
+            from: from,
+            align: align
+        }
+    });
+}
+
+function checkInputDate(){
+    let startDate = document.getElementById("start-date").value;
+    let endDate = document.getElementById("end-date").value;
+
+    const x = new Date(startDate);
+    const y = new Date(endDate);
+
+    if(x < y){
+        return true;
+    }else{
+        showNotificationInputDate('top','right');
+        return false;
+    }
 
 }
 

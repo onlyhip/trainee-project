@@ -4,6 +4,10 @@ import com.edu.hutech.entities.Course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
@@ -20,4 +24,13 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
      * @return Course object or null
      */
     Course findCourseByName(String name);
+
+    /**
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<Course> findAllByOpenDateGreaterThanEqualAndEndDateLessThanEqual(Date startDate,Date endDate);
+
 }
