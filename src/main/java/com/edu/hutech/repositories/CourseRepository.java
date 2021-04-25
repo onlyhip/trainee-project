@@ -33,4 +33,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
      */
     List<Course> findAllByOpenDateGreaterThanEqualAndEndDateLessThanEqual(Date startDate,Date endDate);
 
+
 }

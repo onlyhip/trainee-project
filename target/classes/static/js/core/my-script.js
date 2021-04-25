@@ -1,10 +1,10 @@
 $().ready(function () {
-    $(window).keydown(function(event){
-        if(event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
+    // $(window).keydown(function(event){
+    //     if(event.keyCode == 13) {
+    //         event.preventDefault();
+    //         return false;
+    //     }
+    // });
 
     createPieFirst();
     createPieSecond();
@@ -864,7 +864,7 @@ $('#pills-tab a').on('click', function (e) {
 
 $(function () {
     $('form').each(function () {
-        $(this).find('input').keypress(function (e) {
+        $('#size').keypress(function (e) {
             // Enter pressed?
             let t = $('#size').val();
             if (t < 5 || t > 50) {

@@ -43,11 +43,13 @@ public class ClassController {
      */
     @GetMapping()
     public String displayCourseList(Model model, @RequestParam("page") Optional<Integer> page,
-                                    @RequestParam("size") Optional<Integer> size, @RequestParam("field") Optional<String> field) {
+                                    @RequestParam("size") Optional<Integer> size, @RequestParam("field") Optional<String> field, @RequestParam("search") Optional<String> search) {
 
         int cPage = page.orElse(1);
         int pageSize = size.orElse(5);
         String sortField = field.orElse("default");
+
+        String searchWord = search.orElse("");
 
         if (pageSize < 5) {
             pageSize = 5;

@@ -64,5 +64,4 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll(pageable);
     }
 
-
 }
