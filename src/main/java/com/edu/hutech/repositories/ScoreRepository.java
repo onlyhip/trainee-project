@@ -43,4 +43,6 @@ public interface ScoreRepository extends JpaRepository<Score, ScoreId> {
     @Query(name = "find_to_score_dto", nativeQuery = true)
     List<TOScoreDto> findScoreEachTOByTraineeId(@Param("idTrainee") int traineeId);
 
+
+
 }

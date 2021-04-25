@@ -32,38 +32,7 @@ public class GeneralManagement {
     @Autowired
     private CourseRepository courseRepository;
 
-    /**
-     * Playing trainer list
-     * @param model
-     * @return trainer-list view
-     */
-    @GetMapping(value = {"/trainer-list",""})
-    public String displayTrainerList(Model model, @RequestParam("page") Optional<Integer> page) {
 
-
-        int cPage = page.orElse(1);
-        int pageSize = 5;
-
-        List<Trainer> trainers = trainerRepository.findAll();
-        model.addAttribute("trainers", trainers);
-
-        List<Trainer> trainersAfterPaging = Pagination.getPage(trainers, cPage, pageSize);
-        int currIndex = trainers.indexOf(trainersAfterPaging.get(0));
-        int totalPages = (int) Math.ceil( (double)trainers.size()/ (double) pageSize);
-        int totalElements = trainers.size();
-
-        model.addAttribute("trainers", trainersAfterPaging);
-        model.addAttribute("cPage", cPage);
-        model.addAttribute("currIndex", currIndex);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalElements",totalElements);
-        model.addAttribute("size",pageSize);
-
-        PaginationRange p = Pagination.paginationByRange(cPage, totalElements, pageSize, 5);
-        model.addAttribute("paginationRange", p);
-
-        return "pages/general-views/trainer-list";
-    }
 
     /**
      * Display trainee list

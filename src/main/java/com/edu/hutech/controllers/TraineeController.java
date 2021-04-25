@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,12 +44,10 @@ public class TraineeController {
     @GetMapping()
     public String displayTraineeManagement(Model model,
                                            @RequestParam("page") Optional<Integer> page,
-                                           @RequestParam("size") Optional<Integer> size,
-                                           @RequestParam("field") Optional<String> field) {
+                                           @RequestParam("size") Optional<Integer> size) {
 
         int cPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        String sortField = field.orElse("default");
 
         pageSize = pageSize < 5 ? 5 : pageSize > 50 ? 50 : pageSize;
 
@@ -61,7 +61,6 @@ public class TraineeController {
         model.addAttribute("size", pageSize);
         model.addAttribute("totalElements", listTrainees.size());
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("field", sortField);
 
         PaginationRange p = Pagination.paginationByRange(cPage, listTrainees.size(), pageSize, 5);
         model.addAttribute("paginationRange", p);

@@ -13,9 +13,11 @@
 <div layout:fragment="content" class="content">
     <div class="container-fluid">
         <div class="d-flex justify-content-end mb-4">
-            <form th:action="@{/class-management}" method="GET" class="col-md-4 d-flex flex-row justify-content-end p-0">
+            <form th:action="@{/class-management}" method="GET"
+                  class="col-md-4 d-flex flex-row justify-content-end p-0">
                 <div class="input-group col-md-8 p-0">
-                    <input type="text" class="form-control" placeholder="Search" id="search" th:name="search">
+                    <input type="text" class="form-control" placeholder="Search" id="search" th:name="search"
+                           th:value="${search}">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-search"></i>
@@ -34,7 +36,7 @@
                     <button type="submit" class="btn btn-primary btn-block">Import Class Information</button>
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary btn-block">Import Internships</button>
+                    <button type="submit" class="btn btn-primary btn-block">Import Trainee</button>
                 </div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary btn-block">Import Classes Planning</button>
@@ -49,31 +51,58 @@
                     <div class="input-group-prepend align-self-center">
                         <span class="input-group-text">Show rows:&nbsp;</span>
                     </div>
-                    <input type="number" class="form-control" name="size" id="size" min="5" max="50" th:value="${size}">
+                    <input type="number" class="form-control" name="size" id="size" min="5" max="500" th:value="${size}">
                     <input name="field" id="field" th:value="${field}" hidden>
                     <input type="submit" hidden>
                 </div>
                 <div class="d-flex col-md-10 justify-content-end">
 
-                    <div class="col-md-1 dropleft">
+                    <div class="col-md-1 dropleft d-flex pr-0 justify-content-end">
                         <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><i class="fa fa-sort-amount-asc"
                                                                               aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'default'})}">Default</a>
+
+                            <a class="dropdown-item"
+                               th:href="@{/class-management(size=${size},field = ${'status-asc'})}">Status
+                                - ASC</a>
+                            <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'status'})}">Status
+                                - DESC</a>
+
+                            <a class="dropdown-item"
+                               th:href="@{/class-management(size=${size},field = ${'endDate-asc'})}">End Date
+                                - ASC</a>
+                            <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'endDate'})}">End
+                                Date
+                                - DESC</a>
+
+                            <a class="dropdown-item"
+                               th:href="@{/class-management(size=${size},field = ${'openDate-asc'})}">Start Date
+                                - ASC</a>
+                            <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'openDate'})}">Start
+                                Date
+                                - DESC</a>
+
+                            <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'name-asc'})}">
+                                Class Name - ASC</a>
                             <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'name'})}">
-                                Name - DESC</a>
+                                Class Name - DESC</a>
+
+                            <a class="dropdown-item"
+                               th:href="@{/class-management(size=${size},field = ${'head-teacher-asc'})}">Head
+                                Teacher - ASC</a>
                             <a class="dropdown-item"
                                th:href="@{/class-management(size=${size},field = ${'head-teacher'})}">Head
                                 Teacher - DESC</a>
-                            <a class="dropdown-item" th:href="@{/class-management(size=${size},field = ${'status'})}">Status
-                                - DESC</a>
+
+
                         </div>
                     </div>
-                    <div class="col-md-1 d-flex pr-0 justify-content-end">
+                    <div class="col-md-1 d-flex pr-0 ml-3 justify-content-end" sec:authorize="isAuthenticated()">
                         <a type="button" class="btn btn-primary"
-                           th:href="@{/class-management/class-details(id = ${classId},page=${cPage},view='tiles')}"><i
+                           th:href="@{/class-management/export(size=${classPage.size},page=${i},field = ${field})}"><i
                                 class="fa fa-download" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -95,9 +124,8 @@
                                 <th>START DATE</th>
                                 <th>END DATE</th>
                                 <th>HEAD TEACHER</th>
-                                <th>TYPE</th>
                                 <th>STATUS</th>
-                                <th>ISSUES</th>
+                                <th>DETAILS</th>
 
                             </tr>
                             </thead>
@@ -116,11 +144,11 @@
                                     th:onclick="'javascript:rowClicked(\'' + ${class.id} + '\');'"></td>
                                 <td th:text="${class.trainer.name}"
                                     th:onclick="'javascript:rowClicked(\'' + ${class.id} + '\');'"></td>
-                                <td th:onclick="'javascript:rowClicked(\'' + ${class.id} + '\');'">Fresher</td>
                                 <td th:text="${class.status}"
                                     th:onclick="'javascript:rowClicked(\'' + ${class.id} + '\');'"></td>
                                 <td>
-                                    <a type="button" class="btn btn-primary" th:href="@{/class-management/class-details(id=${class.id})    }">
+                                    <a type="button" class="btn btn-primary"
+                                       th:href="@{/class-management/class-details(id=${class.id})}">
                                         Details
                                     </a>
                                 </td>

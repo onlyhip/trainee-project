@@ -41,6 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/change-password").authenticated()
                 .antMatchers("/user-details").authenticated()
                 .antMatchers("/user-update").authenticated()
+                .antMatchers("/class-management/class-details/export").authenticated()
+                .antMatchers("/class-management/export").authenticated()
                 .antMatchers("/logout").authenticated()
                 .and()
                 .formLogin() // Submit URL of login page.

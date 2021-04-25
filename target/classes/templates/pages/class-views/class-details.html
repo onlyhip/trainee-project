@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout-template.html}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:with="currentPage='Class Management',currentLink='Class Management',currentTemplate='Default Management'"
       xmlns:th="http://www.thymeleaf.org">
 
@@ -128,7 +129,8 @@
                         <div class="tab-pane fade" id="pills-email" role="tabpanel" aria-labelledby="pills-email-tab">
                             <h3 th:text="${class.trainer.email}"></h3>
                         </div>
-                        <div class="tab-pane fade" id="pills-facebook" role="tabpanel" aria-labelledby="pills-facebook-tab">
+                        <div class="tab-pane fade" id="pills-facebook" role="tabpanel"
+                             aria-labelledby="pills-facebook-tab">
                             <h3 th:text="${class.trainer.facebook}"></h3>
                         </div>
 
@@ -153,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-end">
+        <div class="row d-flex justify-content-end mb-4" sec:authorize="isAuthenticated()">
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary btn-block">Import Attendance</button>
             </div>
@@ -180,6 +182,12 @@
                     <a type="button" class="btn btn-primary"
                        th:href="@{/class-management/class-details(id = ${classId},page=${cPage},view='tiles')}"><i
                             class="fa fa-th-list" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col-md-1" sec:authorize="isAuthenticated()">
+                    <a type="button" class="btn btn-primary"
+                       th:href="@{/class-management/class-details/export(id = ${classId})}"><i
+                            class="fa fa-download" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>

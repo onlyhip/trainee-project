@@ -59,9 +59,27 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Page<Course> findPaginatedDesc(int pageNo, int pageSize, String sortField) {
+        Sort sort = Sort.by(sortField).descending();
+        // Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return courseRepository.findAll(pageable);
+    }
+
+    @Override
     public Page<Course> findPaginated(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return courseRepository.findAll(pageable);
     }
+
+    @Override
+    public List<Course> searchByKeyword(String keyword) {
+        if (!keyword.equals("")) {
+            return courseRepository.search(keyword);
+        }
+        return courseRepository.findAll();
+    }
+
 
 }

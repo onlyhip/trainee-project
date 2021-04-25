@@ -867,7 +867,7 @@ $(function () {
         $('#size').keypress(function (e) {
             // Enter pressed?
             let t = $('#size').val();
-            if (t < 5 || t > 50) {
+            if (t < 5 || t > 500) {
                 this.form.checkValidity();
             } else {
                 if (e.which == 10 || e.which == 13) {

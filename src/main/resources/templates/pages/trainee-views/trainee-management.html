@@ -19,25 +19,25 @@
             <div class="row mt-2 mb-2 d-flex justify-content-between">
 
                 <div class="col-md-1 dropdown">
-                    <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'default'})}">Default</a>
-                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'name'})}">
-                            Name - DESC</a>
-                        <a class="dropdown-item"
-                           th:href="@{/trainee-management(size=${size},field = ${'account'})}">Account - DESC</a>
-                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'university'})}">University
-                            - DESC</a>
-                    </div>
+<!--                    <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown"-->
+<!--                            aria-haspopup="true" aria-expanded="false"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>-->
+<!--                    </button>-->
+<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'default'})}">Default</a>-->
+<!--                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'name'})}">-->
+<!--                            Name - DESC</a>-->
+<!--                        <a class="dropdown-item"-->
+<!--                           th:href="@{/trainee-management(size=${size},field = ${'account'})}">Account - DESC</a>-->
+<!--                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'university'})}">University-->
+<!--                            - DESC</a>-->
+<!--                    </div>-->
                 </div>
                 <div class="input-group col-md-3">
                     <div class="input-group-prepend align-self-center">
                         <span class="input-group-text">Page size:&nbsp;</span>
                     </div>
                     <input type="number" class="form-control" name="size" id="size" min="5" max="50" th:value="${size}">
-                    <input name="field" id="field" th:value="${field}" hidden>
+<!--                    <input name="field" id="field" th:value="${field}" hidden>-->
                     <input type="submit" hidden>
                 </div>
             </div>
@@ -117,14 +117,14 @@
                     <ul class="pagination justify-content-center font-weight-bold">
                         <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${1},field = ${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${1})}"
                                aria-label="Previous" title="First Page" data-toggle="tooltip">
                                 <span aria-hidden="true">First</span>
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${cPage - 1},field = ${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${cPage - 1})}"
                                aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -133,7 +133,7 @@
                             th:each="i : ${#numbers.sequence( paginationRange.min, paginationRange.max)}"
                             th:classappend="${i eq paginationRange.currentPage} ? 'active'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${i},field = ${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${i})}"
                                th:text="${i}"
                                th:title="${'Page '+ i}" data-toggle="tooltip">
                             </a>
@@ -141,7 +141,7 @@
                         <li class="page-item"
                             th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${cPage + 1},field = ${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${cPage + 1})}"
                                aria-label="Next" title="Next Page" data-toggle="tooltip">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -149,7 +149,7 @@
                         <li class="page-item"
                             th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${totalPages},field = ${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${totalPages})}"
                                aria-label="Next" title="Last Page" data-toggle="tooltip">
                                 <span aria-hidden="true">Last</span>
                             </a>
