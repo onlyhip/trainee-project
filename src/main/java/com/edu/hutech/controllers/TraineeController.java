@@ -52,12 +52,15 @@ public class TraineeController {
                                            @RequestParam("page") Optional<Integer> page,
                                            @RequestParam("size") Optional<Integer> size,
                                            @RequestParam("field") Optional<String> field,
+                                           @RequestParam("view") Optional<String> view,
                                            @RequestParam("search") Optional<String> search) {
 
         int cPage = page.orElse(1);
         int pageSize = size.orElse(10);
         String sortField = field.orElse("default");
         String keyword = search.orElse("");
+        String modeView = view.orElse("list");
+
 
         pageSize = pageSize < 5 ? 5 : pageSize > 500 ? 500 : pageSize;
 
@@ -78,6 +81,7 @@ public class TraineeController {
 
         int totalPages = (int) Math.ceil((double) listTrainees.size() / (double) pageSize);
 
+        model.addAttribute("modeView", modeView);
         model.addAttribute("trainees", trainees);
         model.addAttribute("cPage", cPage);
         model.addAttribute("size", pageSize);

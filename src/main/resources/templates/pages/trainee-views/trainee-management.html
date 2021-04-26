@@ -13,9 +13,11 @@
 <div layout:fragment="content" class="content">
     <div class="container-fluid">
         <div class="d-flex justify-content-end mb-4">
-            <form th:action="@{/trainee-management}" method="GET" class="col-md-4 d-flex flex-row justify-content-end p-0">
+            <form th:action="@{/trainee-management}" method="GET"
+                  class="col-md-4 d-flex flex-row justify-content-end p-0">
                 <div class="input-group col-md-8 p-0">
-                    <input type="text" class="form-control" placeholder="Search" id="search" name="search" th:value="${search}">
+                    <input type="text" class="form-control" placeholder="Search" id="search" name="search"
+                           th:value="${search}">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-search"></i>
@@ -24,27 +26,46 @@
                 </div>
             </form>
         </div>
+        <form th:action="@{/action}" method="post" sec:authorize="isAuthenticated()">
+            <div class="row mb-4 justify-content-start">
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block">Import Fresher</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block">Import Internship</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block">Import Trainee Information</button>
+                </div>
+
+            </div>
+        </form>
 
         <form method="get" th:action="@{/trainee-management}">
             <div class="row mt-2 mb-2 d-flex justify-content-between">
+                <div class="d-flex col-md-10 pl-0 justify-content-start">
 
-                <div class="input-group col-md-2">
-                    <div class="input-group-prepend align-self-center">
-                        <span class="input-group-text">Show items:&nbsp;</span>
+                    <div class="col-md-1">
+                        <a type="button" class="btn btn-primary"
+                           th:href="@{/trainee-management(size=${size},page=${cPage},field=${field},view='list')}"><i
+                                class="fa fa-th-large" aria-hidden="true"></i>
+                        </a>
                     </div>
-                    <input type="number" class="form-control" name="size" id="size" min="5" max="500" th:value="${size}">
-                    <input name="field" id="field" value="default" hidden="">
-                    <input type="submit" hidden="" style="display: none;">
-                </div>
-
-                <div class="d-flex col-md-10 justify-content-end">
-
-                    <div class="col-md-1 dropleft d-flex pr-0 justify-content-end">
-                        <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="col-md-1 ml-3">
+                        <a type="button" class="btn btn-primary"
+                           th:href="@{/trainee-management(size=${size},page=${cPage},field=${field},view='tiles')}"><i
+                                class="fa fa-th-list" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-1 d-flex ml-3 justify-content-end">
+                        <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'default'})}">Default</a>
+                            <a class="dropdown-item"
+                               th:href="@{/trainee-management(size=${size},field = ${'default'})}">Default</a>
 
                             <a class="dropdown-item"
                                th:href="@{/trainee-management(size=${size},field = ${'score-asc'})}">Rank
@@ -52,11 +73,6 @@
                             <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'score'})}">Rank
                                 - DESC</a>
 
-                            <a class="dropdown-item"
-                               th:href="@{/trainee-management(size=${size},field = ${'name-asc'})}">Name
-                                - ASC</a>
-                            <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'name'})}">Name
-                                - DESC</a>
 
                             <a class="dropdown-item"
                                th:href="@{/trainee-management(size=${size},field = ${'email-asc'})}">Email
@@ -67,120 +83,192 @@
                             <a class="dropdown-item"
                                th:href="@{/trainee-management(size=${size},field = ${'account-asc'})}">Account
                                 - ASC</a>
-                            <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'account'})}">Account
+                            <a class="dropdown-item"
+                               th:href="@{/trainee-management(size=${size},field = ${'account'})}">Account
                                 - DESC</a>
 
 
                             <a class="dropdown-item"
                                th:href="@{/trainee-management(size=${size},field = ${'university-asc'})}">University
                                 - ASC</a>
-                            <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'university'})}">University
+                            <a class="dropdown-item"
+                               th:href="@{/trainee-management(size=${size},field = ${'university'})}">University
                                 - DESC</a>
-
 
 
                         </div>
                     </div>
-                    <div class="col-md-1 d-flex pr-0 ml-3 justify-content-end" sec:authorize="isAuthenticated()">
-                        <a type="button" class="btn btn-primary" th:href="@{/trainee-management/export(size=${size},page=${i},field = ${field})}">
+                    <div class="col-md-1 d-flex ml-3 justify-content-end" sec:authorize="isAuthenticated()">
+                        <a type="button" class="btn btn-primary"
+                           th:href="@{/trainee-management/export(size=${size},page=${i},field = ${field})}">
                             <i class="fa fa-download" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
-            </div>
+                <div class="input-group col-md-2">
+                    <div class="input-group-prepend align-self-center">
+                        <span class="input-group-text">Show items:&nbsp;</span>
+                    </div>
+                    <input type="number" class="form-control" name="size" id="size" min="5" max="500"
+                           th:value="${size}">
+                    <input name="field" id="field" th:value="${field}" hidden="">
+                    <input name="view" id="view" th:value="${modeView}" hidden>
+                    <input type="submit" hidden="" style="display: none;">
+                </div>
 
-<!--                <div class="col-md-1 dropdown">-->
-<!--&lt;!&ndash;                    <button type="button" class="btn btn-primary" id="dropdownMenuButton" data-toggle="dropdown"&ndash;&gt;-->
-<!--&lt;!&ndash;                            aria-haspopup="true" aria-expanded="false"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'default'})}">Default</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'name'})}">&ndash;&gt;-->
-<!--&lt;!&ndash;                            Name - DESC</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a class="dropdown-item"&ndash;&gt;-->
-<!--&lt;!&ndash;                           th:href="@{/trainee-management(size=${size},field = ${'account'})}">Account - DESC</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a class="dropdown-item" th:href="@{/trainee-management(size=${size},field = ${'university'})}">University&ndash;&gt;-->
-<!--&lt;!&ndash;                            - DESC</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--                </div>-->
-<!--                <div class="input-group col-md-3">-->
-<!--                    <div class="input-group-prepend align-self-center">-->
-<!--                        <span class="input-group-text">Page size:&nbsp;</span>-->
-<!--                    </div>-->
-<!--                    <input type="number" class="form-control" name="size" id="size" min="5" max="50" th:value="${size}">-->
-<!--&lt;!&ndash;                    <input name="field" id="field" th:value="${field}" hidden>&ndash;&gt;-->
-<!--                    <input type="submit" hidden>-->
-<!--                </div>-->
-<!--            </div>-->
+
+            </div>
         </form>
 
-        <div class="row">
-            <div class="col-md-6" th:each="trainee : ${trainees}">
-                <div class="card profile d-flex flex-row">
-                    <div class="col-md-4 text-center">
-                        <figure>
-                            <img src="/img/avt.jpg" alt="" class="rounded-circle img-fluid mt-4">
-                            <figcaption class="ratings">
-                                <p>
-                                    <a class="text-warning"
-                                       th:each="i : ${#numbers.sequence( 1,trainee.score + 1, 2)}">
-                                        <span class="fa fa-star"></span>
-                                    </a>
-                                </p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="col-md-8">
-                        <h4 class="text-primary"><span
-                                class="fa fa-user mr-1 text-dark"></span>
-                            <a th:href="@{/trainee-management/trainee-details(id= ${trainee.id})}">[[${trainee.name}]]</a>
-                        </h4>
-                        <p class="mb-1"><span
-                                class="fa fa-info-circle mr-1"></span><strong>Account: </strong>
-                            [[${trainee.account}]]
-                        </p>
-                        <p class="mb-1"
-                           th:if="${trainee.score <= 10 and trainee.score >= 9}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            A++
-                        </p>
-                        <p class="mb-1"
-                           th:if="${trainee.score < 9 and trainee.score >= 8}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            A+
-                        </p>
-                        <p class="mb-1"
-                           th:if="${trainee.score < 8 and trainee.score >= 7}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            A
-                        </p>
-                        <p class="mb-1"
-                           th:if="${trainee.score < 7 and trainee.score >= 6}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            B
-                        </p>
-                        <p class="mb-1"
-                           th:if="${trainee.score < 6 and trainee.score >= 5}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            C
-                        </p>
-                        <p class="mb-1" th:if="${trainee.score < 5}"
-                        ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
-                            D
-                        </p>
+        <th:block th:if="${modeView eq 'list'}">
+            <div class="row">
+                <div class="col-md-6" th:each="trainee : ${trainees}">
+                    <div class="card profile d-flex flex-row">
+                        <div class="col-md-4 text-center">
+                            <figure>
+                                <img src="/img/avt.jpg" alt="" class="rounded-circle img-fluid mt-4">
+                                <figcaption class="ratings">
+                                    <p>
+                                        <a class="text-warning"
+                                           th:each="i : ${#numbers.sequence( 1,trainee.score + 1, 2)}">
+                                            <span class="fa fa-star"></span>
+                                        </a>
+                                    </p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="text-primary"><span
+                                    class="fa fa-user mr-1 text-dark"></span>
+                                <a th:href="@{/trainee-management/trainee-details(id= ${trainee.id})}">[[${trainee.name}]]</a>
+                            </h4>
+                            <p class="mb-1"><span
+                                    class="fa fa-info-circle mr-1"></span><strong>Account: </strong>
+                                [[${trainee.account}]]
+                            </p>
+                            <p class="mb-1"
+                               th:if="${trainee.score <= 10 and trainee.score >= 9}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                A++
+                            </p>
+                            <p class="mb-1"
+                               th:if="${trainee.score < 9 and trainee.score >= 8}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                A+
+                            </p>
+                            <p class="mb-1"
+                               th:if="${trainee.score < 8 and trainee.score >= 7}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                A
+                            </p>
+                            <p class="mb-1"
+                               th:if="${trainee.score < 7 and trainee.score >= 6}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                B
+                            </p>
+                            <p class="mb-1"
+                               th:if="${trainee.score < 6 and trainee.score >= 5}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                C
+                            </p>
+                            <p class="mb-1" th:if="${trainee.score < 5}"
+                            ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                D
+                            </p>
 
-                        <p class="mb-1 text-primary"><span
-                                class="fa fa-envelope mr-1 text-dark"></span><strong
-                                class="text-dark">Email: </strong>
-                            [[${trainee.email}]]
-                        </p>
-                        <p class="mb-1"><span class="fa fa-university mr-1"></span><strong>University: </strong>
-                            [[${trainee.university}]]
-                        </p>
+                            <p class="mb-1 text-primary"><span
+                                    class="fa fa-envelope mr-1 text-dark"></span><strong
+                                    class="text-dark">Email: </strong>
+                                [[${trainee.email}]]
+                            </p>
+                            <p class="mb-1"><span class="fa fa-university mr-1"></span><strong>University: </strong>
+                                [[${trainee.university}]]
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </th:block>
+        <th:block th:unless="${modeView eq 'list'}">
+            <div class="row">
+                <div class="col-md-12" th:each="trainee : ${trainees}">
+                    <div class="card d-flex flex-row">
+                        <div class="col-md-1 text-center">
+                            <figure>
+                                <img src="/img/avt.jpg" alt="" class="rounded-circle img-fluid mt-3 mb-0">
+                            </figure>
+                        </div>
+                        <div class="col-md-11 d-flex flex-row">
+                            <div class="col-md-4">
+                                <h4 class="text-primary mt-3 mb-2"><span
+                                        class="fa fa-user mr-1 text-dark"></span>
+                                    <a th:href="@{/trainee-management/trainee-details(id= ${trainee.id})}">[[${trainee.name}]]</a>
+                                </h4>
+                                <figure class="ml-1">
+                                    <figcaption class="ratings">
+                                        <p class="pl-4">
+                                            <a class="text-warning"
+                                               th:each="i : ${#numbers.sequence( 1,trainee.score + 1, 2)}">
+                                                <span class="fa fa-star"></span>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+
+                            </div>
+                            <div class="col-md-4">
+                                <p class="d-flex align-items-center mt-3"><span
+                                        class="fa fa-info-circle mr-1"></span><strong>Account: </strong>
+                                    &nbsp;[[${trainee.account}]]
+                                </p>
+
+                                <p class="d-flex align-items-center mt-3"
+                                   th:if="${trainee.score <= 10 and trainee.score >= 9}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;A++
+                                </p>
+                                <p class="d-flex align-items-center mt-3"
+                                   th:if="${trainee.score < 9 and trainee.score >= 8}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;A+
+                                </p>
+                                <p class="d-flex align-items-center mt-3"
+                                   th:if="${trainee.score < 8 and trainee.score >= 7}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;A
+                                </p>
+                                <p class="d-flex align-items-center mt-3"
+                                   th:if="${trainee.score < 7 and trainee.score >= 6}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;B
+                                </p>
+                                <p class="d-flex align-items-center mt-3"
+                                   th:if="${trainee.score < 6 and trainee.score >= 5}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;C
+                                </p>
+                                <p class="d-flex align-items-center mt-3" th:if="${trainee.score < 5}"
+                                ><span class="fa fa-graduation-cap mr-1"></span><strong>Rank: </strong>
+                                    &nbsp;D
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="d-flex align-items-center mt-3 text-primary"><span
+                                        class="fa fa-envelope mr-1 text-dark"></span><strong
+                                        class="text-dark">Email: </strong>
+                                    &nbsp;[[${trainee.email}]]
+                                </p>
+                                <p class="d-flex align-items-center mt-3"><span
+                                        class="fa fa-university mr-1"></span><strong>University: </strong>
+                                    &nbsp;[[${trainee.university}]]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
         <div class="row">
             <div class="col-md-12 mt-3" th:if="${totalElements > size}">
                 <!-- directors pagination -->
@@ -188,14 +276,14 @@
                     <ul class="pagination justify-content-center font-weight-bold">
                         <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${1},field=${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${1},field=${field},view=${modeView})}"
                                aria-label="Previous" title="First Page" data-toggle="tooltip">
                                 <span aria-hidden="true">First</span>
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${paginationRange.currentPage le 1} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${cPage - 1},field=${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${cPage - 1},field=${field},view=${modeView})}"
                                aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -204,7 +292,7 @@
                             th:each="i : ${#numbers.sequence( paginationRange.min, paginationRange.max)}"
                             th:classappend="${i eq paginationRange.currentPage} ? 'active'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${i},field=${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${i},field=${field},view=${modeView})}"
                                th:text="${i}"
                                th:title="${'Page '+ i}" data-toggle="tooltip">
                             </a>
@@ -212,7 +300,7 @@
                         <li class="page-item"
                             th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${cPage + 1},field=${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${cPage + 1},field=${field},view=${modeView})}"
                                aria-label="Next" title="Next Page" data-toggle="tooltip">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -220,7 +308,7 @@
                         <li class="page-item"
                             th:classappend="${paginationRange.currentPage ge totalPages } ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/trainee-management(size=${size},page=${totalPages},field=${field})}"
+                               th:href="@{/trainee-management(size=${size},page=${totalPages},field=${field},view=${modeView})}"
                                aria-label="Next" title="Last Page" data-toggle="tooltip">
                                 <span aria-hidden="true">Last</span>
                             </a>
