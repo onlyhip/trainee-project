@@ -1,26 +1,27 @@
 package com.edu.hutech.controllers;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-import com.edu.hutech.dtos.TraineeScoreDto;
-import com.edu.hutech.entities.Course;
+import com.edu.hutech.dtos.TrainerDto;
 import com.edu.hutech.entities.Trainer;
 import com.edu.hutech.models.PaginationRange;
 import com.edu.hutech.repositories.CourseRepository;
 import com.edu.hutech.repositories.TraineeRepository;
 import com.edu.hutech.repositories.TrainerRepository;
+import com.edu.hutech.utils.excel.ExcelExporter;
 import com.edu.hutech.utils.page.Pagination;
 
 import com.edu.hutech.utils.sort.GenericComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/trainer-management")
@@ -89,4 +90,53 @@ public class TrainerController {
 
         return "pages/trainer-views/trainer-management";
     }
+
+    @GetMapping("/export")
+    public void exportToExcel(HttpServletResponse response,
+                              @RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size,
+                              @RequestParam("field") Optional<String> field) throws IOException {
+
+        int cPage = page.orElse(1);
+        int pageSize =size.orElse(5);
+        String sortField = field.orElse("default");
+
+        pageSize = pageSize < 5 ? 5 : pageSize > 500 ? 500 : pageSize;
+
+        List<Trainer> trainers = trainerRepository.findAll();
+
+        if (sortField.contains("-asc")) {
+            String[] splits = sortField.split("-asc", 2);
+            Collections.sort(trainers, new GenericComparator(true, splits[0]));
+        } else {
+            if (sortField.equals("default")) {
+            } else {
+                Collections.sort(trainers, new GenericComparator(false, sortField));
+            }
+        }
+
+        List<Trainer> trainersAfterPaging = Pagination.getPage(trainers, cPage, pageSize);
+
+
+        response.setContentType("application/octet-stream");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=trainer-management_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+
+        List<TrainerDto> trainerDtoList = new ArrayList<>();
+
+        for (Trainer t : trainersAfterPaging) {
+            trainerDtoList.add(new TrainerDto(t.getId(),t.getAccount(), t.getNational(),t.getName(),t.getEmail(),t.getTelNumber(),t.getFacebook()));
+        }
+
+
+        ExcelExporter<TrainerDto> excelExporter = new ExcelExporter<>(trainerDtoList, TrainerDto.class);
+
+        excelExporter.export(response);
+
+    }
+
 }
