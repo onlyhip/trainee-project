@@ -116,7 +116,7 @@
                                 <th>EMAIL</th>
                                 <th>TEL NUMBER</th>
                                 <th>NATIONAL</th>
-
+                                <th>DETAILS</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -127,7 +127,12 @@
                                 <td th:text="${trainer.email}"></td>
                                 <td th:text="${trainer.telNumber}"></td>
                                 <td th:text="${trainer.national}"></td>
-
+                                <td>
+                                    <a type="button" class="btn btn-primary"
+                                       th:href="@{/trainer-management/trainer-details(id=${trainer.id})}">
+                                        Details
+                                    </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

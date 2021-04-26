@@ -76,8 +76,9 @@ public class HomeController {
 
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String defaultEndDate = dateFormat.format(date);
-        String defaultStartDate = "2017-01-01";
+        //String defaultEndDate = dateFormat.format(date);
+        String defaultEndDate = "yyyy-MM-dd";
+        String defaultStartDate = "yyyy-MM-dd";
 
         String start = startDate.orElse(defaultStartDate);
         String end = endDate.orElse(defaultEndDate);
